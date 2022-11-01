@@ -1,0 +1,208 @@
+
+19 - DS1307 LCD.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000d2  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000146  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000007  00800060  00800060  00000146  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000146  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000178  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 000000a8  00000000  00000000  000001b4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   00000aca  00000000  00000000  0000025c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 0000069c  00000000  00000000  00000d26  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   00000414  00000000  00000000  000013c2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  0000012c  00000000  00000000  000017d8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    000003d6  00000000  00000000  00001904  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    00000279  00000000  00000000  00001cda  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000078  00000000  00000000  00001f53  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	21 c0       	rjmp	.+66     	; 0x46 <__bad_interrupt>
+   4:	20 c0       	rjmp	.+64     	; 0x46 <__bad_interrupt>
+   6:	1f c0       	rjmp	.+62     	; 0x46 <__bad_interrupt>
+   8:	1e c0       	rjmp	.+60     	; 0x46 <__bad_interrupt>
+   a:	1d c0       	rjmp	.+58     	; 0x46 <__bad_interrupt>
+   c:	1c c0       	rjmp	.+56     	; 0x46 <__bad_interrupt>
+   e:	1b c0       	rjmp	.+54     	; 0x46 <__bad_interrupt>
+  10:	1a c0       	rjmp	.+52     	; 0x46 <__bad_interrupt>
+  12:	19 c0       	rjmp	.+50     	; 0x46 <__bad_interrupt>
+  14:	18 c0       	rjmp	.+48     	; 0x46 <__bad_interrupt>
+  16:	17 c0       	rjmp	.+46     	; 0x46 <__bad_interrupt>
+  18:	16 c0       	rjmp	.+44     	; 0x46 <__bad_interrupt>
+  1a:	15 c0       	rjmp	.+42     	; 0x46 <__bad_interrupt>
+  1c:	14 c0       	rjmp	.+40     	; 0x46 <__bad_interrupt>
+  1e:	13 c0       	rjmp	.+38     	; 0x46 <__bad_interrupt>
+  20:	12 c0       	rjmp	.+36     	; 0x46 <__bad_interrupt>
+  22:	11 c0       	rjmp	.+34     	; 0x46 <__bad_interrupt>
+  24:	10 c0       	rjmp	.+32     	; 0x46 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_clear_bss>:
+  32:	20 e0       	ldi	r18, 0x00	; 0
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	01 c0       	rjmp	.+2      	; 0x3c <.do_clear_bss_start>
+
+0000003a <.do_clear_bss_loop>:
+  3a:	1d 92       	st	X+, r1
+
+0000003c <.do_clear_bss_start>:
+  3c:	a7 36       	cpi	r26, 0x67	; 103
+  3e:	b2 07       	cpc	r27, r18
+  40:	e1 f7       	brne	.-8      	; 0x3a <.do_clear_bss_loop>
+  42:	42 d0       	rcall	.+132    	; 0xc8 <main>
+  44:	44 c0       	rjmp	.+136    	; 0xce <_exit>
+
+00000046 <__bad_interrupt>:
+  46:	dc cf       	rjmp	.-72     	; 0x0 <__vectors>
+
+00000048 <ds1307_read_all_param>:
+	i2c_StopCondition();
+}
+
+void ds1307_read_all_param(void)
+{
+	i2c_StartCondition();
+  48:	21 d0       	rcall	.+66     	; 0x8c <i2c_StartCondition>
+	i2c_send_byte(ADDR_DS1307_W);
+  4a:	80 ed       	ldi	r24, 0xD0	; 208
+  4c:	28 d0       	rcall	.+80     	; 0x9e <i2c_send_byte>
+	i2c_send_byte(0x00);
+  4e:	80 e0       	ldi	r24, 0x00	; 0
+  50:	26 d0       	rcall	.+76     	; 0x9e <i2c_send_byte>
+	i2c_StartCondition();
+  52:	1c d0       	rcall	.+56     	; 0x8c <i2c_StartCondition>
+	i2c_send_byte(ADDR_DS1307_R);
+  54:	81 ed       	ldi	r24, 0xD1	; 209
+  56:	23 d0       	rcall	.+70     	; 0x9e <i2c_send_byte>
+	sec = i2c_read_byte();
+  58:	29 d0       	rcall	.+82     	; 0xac <i2c_read_byte>
+  5a:	80 93 64 00 	sts	0x0064, r24	; 0x800064 <sec>
+	min = i2c_read_byte();
+  5e:	26 d0       	rcall	.+76     	; 0xac <i2c_read_byte>
+  60:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <min>
+	hour = i2c_read_byte();
+  64:	23 d0       	rcall	.+70     	; 0xac <i2c_read_byte>
+  66:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <hour>
+	day = i2c_read_byte();
+  6a:	20 d0       	rcall	.+64     	; 0xac <i2c_read_byte>
+  6c:	80 93 65 00 	sts	0x0065, r24	; 0x800065 <day>
+	date = i2c_read_byte();
+  70:	1d d0       	rcall	.+58     	; 0xac <i2c_read_byte>
+  72:	80 93 66 00 	sts	0x0066, r24	; 0x800066 <date>
+	month = i2c_read_byte();
+  76:	1a d0       	rcall	.+52     	; 0xac <i2c_read_byte>
+  78:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__DATA_REGION_ORIGIN__>
+	year = i2c_read_last_byte();
+  7c:	1e d0       	rcall	.+60     	; 0xba <i2c_read_last_byte>
+  7e:	80 93 63 00 	sts	0x0063, r24	; 0x800063 <year>
+	i2c_StopCondition();
+  82:	0a d0       	rcall	.+20     	; 0x98 <i2c_StopCondition>
+  84:	08 95       	ret
+
+00000086 <i2c_init>:
+{
+	i2c_StartCondition();
+	i2c_send_byte(address);
+	i2c_send_byte(byte);
+	i2c_StopCondition();
+}
+  86:	80 e2       	ldi	r24, 0x20	; 32
+  88:	80 b9       	out	0x00, r24	; 0
+  8a:	08 95       	ret
+
+0000008c <i2c_StartCondition>:
+  8c:	84 ea       	ldi	r24, 0xA4	; 164
+  8e:	86 bf       	out	0x36, r24	; 54
+  90:	06 b6       	in	r0, 0x36	; 54
+  92:	07 fe       	sbrs	r0, 7
+  94:	fd cf       	rjmp	.-6      	; 0x90 <i2c_StartCondition+0x4>
+  96:	08 95       	ret
+
+00000098 <i2c_StopCondition>:
+  98:	84 e9       	ldi	r24, 0x94	; 148
+  9a:	86 bf       	out	0x36, r24	; 54
+  9c:	08 95       	ret
+
+0000009e <i2c_send_byte>:
+  9e:	83 b9       	out	0x03, r24	; 3
+  a0:	84 e8       	ldi	r24, 0x84	; 132
+  a2:	86 bf       	out	0x36, r24	; 54
+  a4:	06 b6       	in	r0, 0x36	; 54
+  a6:	07 fe       	sbrs	r0, 7
+  a8:	fd cf       	rjmp	.-6      	; 0xa4 <i2c_send_byte+0x6>
+  aa:	08 95       	ret
+
+000000ac <i2c_read_byte>:
+
+unsigned char i2c_read_byte(void)
+{
+	TWCR = (1 << TWEN) | (1 << TWINT) | (1 << TWEA);
+  ac:	84 ec       	ldi	r24, 0xC4	; 196
+  ae:	86 bf       	out	0x36, r24	; 54
+	while (!(TWCR & (1 << TWINT)));
+  b0:	06 b6       	in	r0, 0x36	; 54
+  b2:	07 fe       	sbrs	r0, 7
+  b4:	fd cf       	rjmp	.-6      	; 0xb0 <i2c_read_byte+0x4>
+	return TWDR;
+  b6:	83 b1       	in	r24, 0x03	; 3
+}
+  b8:	08 95       	ret
+
+000000ba <i2c_read_last_byte>:
+
+unsigned char i2c_read_last_byte(void)
+{
+	TWCR = (1 << TWEN) | (1 << TWINT);
+  ba:	84 e8       	ldi	r24, 0x84	; 132
+  bc:	86 bf       	out	0x36, r24	; 54
+	while (!(TWCR & (1 << TWINT)));
+  be:	06 b6       	in	r0, 0x36	; 54
+  c0:	07 fe       	sbrs	r0, 7
+  c2:	fd cf       	rjmp	.-6      	; 0xbe <i2c_read_last_byte+0x4>
+	return TWDR;
+  c4:	83 b1       	in	r24, 0x03	; 3
+  c6:	08 95       	ret
+
+000000c8 <main>:
+
+unsigned char sec, min, hour, day, date, month, year;
+
+int main(void)
+{
+	i2c_init();
+  c8:	de df       	rcall	.-68     	; 0x86 <i2c_init>
+//	ds1307_set_all_param(0, 07, 4, MONDAY, 31, 11, 22);
+	ds1307_read_all_param();
+  ca:	be df       	rcall	.-132    	; 0x48 <ds1307_read_all_param>
+  cc:	ff cf       	rjmp	.-2      	; 0xcc <main+0x4>
+
+000000ce <_exit>:
+  ce:	f8 94       	cli
+
+000000d0 <__stop_program>:
+  d0:	ff cf       	rjmp	.-2      	; 0xd0 <__stop_program>
